@@ -1,0 +1,12 @@
+.env
+.logs/
+
+backend/target/
+backend/logs/
+backend/src/main/resources/application-local.yml
+
+frontend/node_modules/
+frontend/.env
+frontend/.nuxt/
+frontend/.output/
+frontend/dist/

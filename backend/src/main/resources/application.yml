@@ -1,0 +1,75 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.debateai.mapper: DEBUG
+    org.springframework.security: INFO
+    org.mybatis: INFO
+  file:
+    name: ${LOG_FILE:logs/debate-ai-backend.log}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${LOG_FILE_PATTERN:logs/debate-ai-backend.%d{yyyy-MM-dd}.%i.log}
+      max-file-size: ${LOG_FILE_MAX_SIZE:10MB}
+      max-history: ${LOG_FILE_MAX_HISTORY:30}
+      total-size-cap: ${LOG_FILE_TOTAL_SIZE_CAP:1GB}
+
+spring:
+  application:
+    name: debate-ai-backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/debate_ai?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000ms
+          multiplier: 2
+  ai:
+    openai:
+      api-key: ${SPRING_AI_OPENAI_API_KEY:${DEEPSEEK_API_KEY:mock-api-key}}
+      base-url: ${SPRING_AI_OPENAI_BASE_URL:https://api.deepseek.com}
+      chat:
+        options:
+          model: ${SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL:deepseek-chat}
+
+app:
+  cors:
+    allowed-origins: ${FRONTEND_BASE_URL:http://localhost:3000,http://127.0.0.1:3000,http://0.0.0.0:3000,http://192.168.*.*:3000,http://10.*.*.*:3000,http://172.*.*.*:3000}
+  ai:
+    mock-when-api-key-missing: ${AI_MOCK_WHEN_API_KEY_MISSING:true}
+    real-api-key: ${SPRING_AI_OPENAI_API_KEY:${DEEPSEEK_API_KEY:}}
+  jwt:
+    secret: ${JWT_SECRET:change-me-change-me-change-me-change-me}
+    expires-seconds: ${JWT_EXPIRES_SECONDS:604800}
+  leaderboard:
+    refresh-interval-ms: ${LEADERBOARD_REFRESH_INTERVAL_MS:300000}
+    initial-delay-ms: ${LEADERBOARD_INITIAL_DELAY_MS:10000}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    banner: false

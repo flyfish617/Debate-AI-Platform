@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/debate_ai?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  ai:
+    openai:
+      api-key: sk-替换为你的DeepSeekKey
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://127.0.0.1:3000,http://0.0.0.0:3000,http://192.168.*.*:3000,http://10.*.*.*:3000,http://172.*.*.*:3000
+  ai:
+    mock-when-api-key-missing: false
+    real-api-key: sk-替换为你的DeepSeekKey
+  jwt:
+    secret: change-me-change-me-change-me-change-me
+    expires-seconds: 604800
